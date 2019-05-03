@@ -1,28 +1,28 @@
 package modules
 
-func ExtractNextToken(n int, runeSlice []rune) ([]rune, []rune) {
+func ExtractNextToken(start int, n int, runeSlice []rune) ([]rune, int) {
 	var token []rune
-	i := 0
+	var i int
 	// get token
-	for i = 0; len(token) < n && len(runeSlice) > i; i++ {
+	for i = start; len(token) < n && len(runeSlice) > i; i++ {
 		if !IsIgnoredChar(runeSlice[i]) {
 			token = append(token, runeSlice[i])
 		}
 	}
 	// slide 1 rune
-	runeSlice = runeSlice[1:]
-	// slide until not ignored char
-	for i, r := range runeSlice {
-		if !IsIgnoredChar(r) {
-			runeSlice = runeSlice[i:]
+	nextStart := start + 1
+	// slide until ignore rune
+	for i = nextStart;i < len(runeSlice) ;i++ {
+		if !IsIgnoredChar(runeSlice[i]) {
+			nextStart = i
 			break
 		}
 	}
 	// ignore except n-gram
 	if len(token) == n {
-		return token, runeSlice
+		return token, nextStart
 	} else {
-		return nil, runeSlice
+		return nil, nextStart
 	}
 
 }

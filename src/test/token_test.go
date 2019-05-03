@@ -15,11 +15,15 @@ func TestExtractNextToken(t *testing.T) {
 	}
 	str := string(g)
 	iStr := []rune(str)
+	var nextStart int
 	var token []rune
 	N := 4
 	fmt.Println(iStr)
-	for len(iStr) > 0 {
-		token, iStr = modules.ExtractNextToken(N, iStr)
+	for {
+		token, nextStart = modules.ExtractNextToken(nextStart, N, iStr)
+		if token == nil {
+			break
+		}
 		fmt.Println(string(token))
 	}
 }
